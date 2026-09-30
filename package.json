@@ -1,0 +1,17 @@
+{
+  "name": "mccia-award-nominations",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "db:init": "node scripts/init-db.js",
+    "sheet:sync": "node scripts/sync-sheet.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

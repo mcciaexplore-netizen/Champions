@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCCIA Awards Nomination</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Decorative background -->
+  <canvas class="bg-grid" id="bgGrid" aria-hidden="true"></canvas>
+  <div class="bg-glow bg-glow--blue" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--green" aria-hidden="true"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <img src="assets/mccia-logo.png" alt="MCCIA Logo" class="nav-logo" />
+      <div class="nav-date" aria-live="polite">
+        <div class="nav-date-text">
+          <span class="nav-day" id="navDay"></span>
+          <time class="nav-fulldate" id="navDate"></time>
+        </div>
+        <span class="icon-tile" aria-hidden="true">
+          <!-- lucide: calendar-days -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+        </span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <header class="hero">
+      <span class="badge badge--green reveal" style="--i:0"><span class="badge-dot"></span>Nominations Open</span>
+      <h1 class="page-title reveal" style="--i:1">Award <span class="text-gradient">Nomination</span> Form</h1>
+      <p class="hero-sub reveal" style="--i:2">Please fill in the details below. Fields marked <span class="req">*</span> are required.</p>
+    </header>
+
+    <div class="card card--static form-card reveal" style="--i:3">
+      <div class="form-card-head">
+        <span class="icon-tile" aria-hidden="true">
+          <!-- lucide: award -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+        </span>
+        <div>
+          <h2>Nominee Details</h2>
+          <p>Tell us who you are and which award you're applying for.</p>
+        </div>
+      </div>
+
+      <form id="awardForm" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="name" class="label-sm">Name <span class="req">*</span></label>
+            <input class="input" type="text" id="name" name="name" placeholder="Enter your full name" autocomplete="name" required />
+            <small class="error-msg"></small>
+          </div>
+
+          <div class="field">
+            <label for="company" class="label-sm">Company Name <span class="req">*</span></label>
+            <input class="input" type="text" id="company" name="company" placeholder="Enter your company name" autocomplete="organization" required />
+            <small class="error-msg"></small>
+          </div>
+
+          <div class="field">
+            <label for="email" class="label-sm">Email <span class="req">*</span></label>
+            <input class="input" type="email" id="email" name="email" placeholder="e.g. name@company.com" autocomplete="email" required />
+            <small class="error-msg"></small>
+          </div>
+
+          <div class="field">
+            <label for="phone" class="label-sm">Phone Number <span class="req">*</span></label>
+            <input class="input" type="tel" id="phone" name="phone" placeholder="e.g. 9876543210" maxlength="15" autocomplete="tel" inputmode="tel" required />
+            <small class="error-msg"></small>
+          </div>
+
+          <div class="field field--full">
+            <label for="award" class="label-sm">Choose Award <span class="req">*</span></label>
+            <select class="input" id="award" name="award" required>
+              <option value="" disabled selected>-- Select an award --</option>
+            </select>
+            <small class="error-msg"></small>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <span class="form-note">Your details are only used for this nomination.</span>
+          <button type="submit" class="btn btn-primary">
+            Submit
+            <!-- lucide: arrow-right -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Red error popup (toast) -->
+  <div class="toast alert alert--red" id="toast" role="alert">
+    <!-- lucide: circle-alert -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+    <span id="toastText"></span>
+  </div>
+
+  <!-- Success modal showing submitted data -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <span class="icon-tile icon-tile--green" aria-hidden="true">
+        <!-- lucide: circle-check -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+      </span>
+      <h2 id="modalTitle">Submitted Successfully</h2>
+      <p>Here is the data you submitted:</p>
+      <div class="table-wrap">
+        <table class="table" id="summary"></table>
+      </div>
+      <button class="btn btn-primary" id="closeModal">Submit another response</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
