@@ -168,14 +168,12 @@ const REDIRECT_MS = 4000;
 const redirectBar = document.getElementById("redirectBar");
 const redirectCount = document.getElementById("redirectCount");
 const redirectAward = document.getElementById("redirectAward");
-const redirectNow = document.getElementById("redirectNow");
 let redirectTimer, redirectFrame;
 
 function startRedirect(url, awardName) {
   // The link comes from the server's award list; only ever leave for mcciapune.com.
   if (!/^https:\/\/mcciapune\.com\//.test(url || "")) return;
   redirectAward.textContent = awardName;
-  redirectNow.href = url;
 
   const start = performance.now();
   const tick = (now) => {
