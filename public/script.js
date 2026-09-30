@@ -1,3 +1,5 @@
+import { AWARDS } from "./awards.js";
+
 // ---------- Live day + date in navbar ----------
 const navDay = document.getElementById("navDay");
 const navDate = document.getElementById("navDate");
@@ -10,14 +12,14 @@ function updateDate() {
 updateDate();
 setInterval(updateDate, 30 * 1000); // rolls over automatically at midnight
 
-// ---------- Populate award dropdown (Award 1 .. Award 10) ----------
+// ---------- Populate award dropdown (from awards.js) ----------
 const awardSelect = document.getElementById("award");
-for (let i = 1; i <= 10; i++) {
+AWARDS.forEach(({ name }) => {
   const opt = document.createElement("option");
-  opt.value = `Award ${i}`;
-  opt.textContent = `Award ${i}`;
+  opt.value = name;
+  opt.textContent = name;
   awardSelect.appendChild(opt);
-}
+});
 
 // ---------- Red toast popup ----------
 const toast = document.getElementById("toast");
@@ -50,7 +52,7 @@ const validators = {
     if (!v.trim()) return "Phone number is required";
     return isValidPhone(v) ? "" : "Invalid number";
   },
-  award: (v) => (v ? "" : "Please choose an award"),
+  award: (v) => (AWARDS.some((a) => a.name === v) ? "" : "Please choose an award"),
 };
 
 function validateField(input) {
@@ -93,6 +95,7 @@ function setSubmitting(on) {
   submitBtn.disabled = on;
   submitBtn.innerHTML = on ? "Submitting…" : submitBtnHtml;
 }
+submitBtn.disabled = false; // ready — the button starts disabled in index.html
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -157,9 +160,41 @@ form.addEventListener("submit", async (e) => {
     row.insertCell().textContent = result.data[key];
   });
   modal.classList.add("show");
+  startRedirect(result.data.award_link, result.data.award);
 });
 
-document.getElementById("closeModal").addEventListener("click", () => {
+// ---------- Redirect bar → chosen award's page ----------
+const REDIRECT_MS = 4000;
+const redirectBar = document.getElementById("redirectBar");
+const redirectCount = document.getElementById("redirectCount");
+const redirectAward = document.getElementById("redirectAward");
+const redirectNow = document.getElementById("redirectNow");
+let redirectTimer, redirectFrame;
+
+function startRedirect(url, awardName) {
+  // The link comes from the server's award list; only ever leave for mcciapune.com.
+  if (!/^https:\/\/mcciapune\.com\//.test(url || "")) return;
+  redirectAward.textContent = awardName;
+  redirectNow.href = url;
+
+  const start = performance.now();
+  const tick = (now) => {
+    const elapsed = Math.min(now - start, REDIRECT_MS);
+    redirectBar.style.transform = `scaleX(${elapsed / REDIRECT_MS})`;
+    redirectCount.textContent = `${Math.ceil((REDIRECT_MS - elapsed) / 1000)}s`;
+    if (elapsed < REDIRECT_MS) redirectFrame = requestAnimationFrame(tick);
+  };
+  redirectFrame = requestAnimationFrame(tick);
+  // setTimeout (not the animation frame) triggers the redirect, so it still fires in a background tab.
+  redirectTimer = setTimeout(() => window.location.assign(url), REDIRECT_MS);
+}
+
+// Coming back with the browser's Back button restores this page from cache — start fresh.
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  clearTimeout(redirectTimer);
+  cancelAnimationFrame(redirectFrame);
+  redirectBar.style.transform = "scaleX(0)";
   modal.classList.remove("show");
   form.reset();
   inputs.forEach((i) => {

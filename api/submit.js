@@ -42,8 +42,8 @@ export default async function handler(req, res) {
   try {
     const sql = getSql();
     [row] = await sql`
-      INSERT INTO nominations (name, company, email, phone, award)
-      VALUES (${data.name}, ${data.company}, ${data.email}, ${data.phone}, ${data.award})
+      INSERT INTO nominations (name, company, email, phone, award, award_link)
+      VALUES (${data.name}, ${data.company}, ${data.email}, ${data.phone}, ${data.award}, ${data.award_link})
       RETURNING id, submitted_at
     `;
   } catch (err) {

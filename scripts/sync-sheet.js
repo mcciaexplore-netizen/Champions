@@ -12,10 +12,10 @@ if (!process.env.DATABASE_URL || !isSheetsConfigured()) {
 }
 
 try {
-  if (await ensureHeaders()) console.log("✓ wrote header row");
+  if (await ensureHeaders()) console.log("✓ header row updated");
 
   const sql = getSql();
-  const rows = await sql`SELECT id, name, company, email, phone, award, submitted_at FROM nominations ORDER BY id`;
+  const rows = await sql`SELECT id, name, company, email, phone, award, award_link, submitted_at FROM nominations ORDER BY submitted_at, id`;
   const inSheet = await getSheetIds();
   const missing = rows.filter((r) => !inSheet.has(String(r.id)));
 

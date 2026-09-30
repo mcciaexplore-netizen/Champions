@@ -149,6 +149,7 @@ h1 { letter-spacing: -0.03em; line-height: 1.1; }
   border-radius: var(--r-btn);
   border: 1px solid transparent;
   cursor: pointer;
+  text-decoration: none; /* also used on <a> links */
   transition: transform var(--t), box-shadow var(--t), border-color var(--t), color var(--t), background var(--t);
 }
 .btn:focus-visible { outline: none; box-shadow: var(--ring), var(--sh-btn); }

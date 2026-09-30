@@ -89,7 +89,8 @@
 
         <div class="form-actions">
           <span class="form-note">Your details are only used for this nomination.</span>
-          <button type="submit" class="btn btn-primary">
+          <!-- Disabled until script.js loads, so an early click can't do a plain GET submit (details in the URL) -->
+          <button type="submit" class="btn btn-primary" disabled>
             Submit
             <!-- lucide: arrow-right -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -118,10 +119,23 @@
       <div class="table-wrap">
         <table class="table" id="summary"></table>
       </div>
-      <button class="btn btn-primary" id="closeModal">Submit another response</button>
+
+      <!-- Redirect bar: fills up, then sends the user to the chosen award's page -->
+      <div class="redirect" aria-live="polite">
+        <div class="redirect-text">
+          <span>Redirecting to <strong id="redirectAward"></strong></span>
+          <span class="redirect-count" id="redirectCount"></span>
+        </div>
+        <div class="redirect-track"><div class="redirect-bar" id="redirectBar"></div></div>
+      </div>
+      <a class="btn btn-primary" id="redirectNow" href="#">
+        Go to award page now
+        <!-- lucide: arrow-right -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>

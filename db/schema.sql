@@ -1,12 +1,15 @@
 -- Award nominations submitted from the form.
 -- Column names match the form field names: name, company, email, phone, award.
+-- id is a random UUID (unique, not guessable, no gaps to explain).
+-- Award names/links are validated against public/awards.js in the API.
 CREATE TABLE IF NOT EXISTS nominations (
-  id           BIGSERIAL PRIMARY KEY,
+  id           UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
   name         TEXT        NOT NULL,
   company      TEXT        NOT NULL,
   email        TEXT        NOT NULL,
   phone        TEXT        NOT NULL,
-  award        TEXT        NOT NULL CHECK (award ~ '^Award ([1-9]|10)$'),
+  award        TEXT        NOT NULL,
+  award_link   TEXT        CHECK (award_link LIKE 'https://mcciapune.com/awards/%'),
   submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
